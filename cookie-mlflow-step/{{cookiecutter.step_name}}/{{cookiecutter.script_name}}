@@ -5,7 +5,7 @@
 import argparse
 import logging
 import wandb
-
+import uuid
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
@@ -13,7 +13,9 @@ logger = logging.getLogger()
 
 def go(args):
 
-    run = wandb.init(job_type="{{cookiecutter.job_type}}")
+    run_name = f"{{cookiecutter.step_name}}_{uuid.uuid4().hex[:8]}"
+    logger.info(f"Running {{cookiecutter.step_name}} with run_name: {run_name}")
+    run = wandb.init(job_type="{{cookiecutter.job_type}}", name=run_name)
     run.config.update(args)
 
     # Download input artifact. This will also log that this script is using this

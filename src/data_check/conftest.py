@@ -1,3 +1,4 @@
+import uuid
 import pytest
 import pandas as pd
 import wandb
@@ -13,7 +14,8 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope='session')
 def data(request):
-    run = wandb.init(job_type="data_tests", resume=True)
+    run_name = f"data_tests_data_{uuid.uuid4().hex[:8]}"
+    run = wandb.init(job_type="data_tests", name=run_name, resume=True)
 
     # Download input artifact. This will also note that this script is using this
     # particular version of the artifact
@@ -29,7 +31,8 @@ def data(request):
 
 @pytest.fixture(scope='session')
 def ref_data(request):
-    run = wandb.init(job_type="data_tests", resume=True)
+    run_name = f"conftest_data_tests_ref_{uuid.uuid4().hex[:8]}"
+    run = wandb.init(job_type="data_tests", name=run_name, resume=True)
 
     # Download input artifact. This will also note that this script is using this
     # particular version of the artifact
@@ -45,6 +48,8 @@ def ref_data(request):
 
 @pytest.fixture(scope='session')
 def kl_threshold(request):
+    run_name = f"conftest_data_tests_kl_threshold_{uuid.uuid4().hex[:8]}"
+    run = wandb.init(job_type="data_tests", name=run_name, resume=True)
     kl_threshold = request.config.option.kl_threshold
 
     if kl_threshold is None:
@@ -54,6 +59,8 @@ def kl_threshold(request):
 
 @pytest.fixture(scope='session')
 def min_price(request):
+    run_name = f"conftest_data_tests_min_price_{uuid.uuid4().hex[:8]}"
+    run = wandb.init(job_type="data_tests", name=run_name, resume=True)
     min_price = request.config.option.min_price
 
     if min_price is None:
@@ -63,6 +70,8 @@ def min_price(request):
 
 @pytest.fixture(scope='session')
 def max_price(request):
+    run_name = f"conftest_data_tests_max_price_{uuid.uuid4().hex[:8]}"
+    run = wandb.init(job_type="data_tests", name=run_name, resume=True)
     max_price = request.config.option.max_price
 
     if max_price is None:
